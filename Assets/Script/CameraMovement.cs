@@ -5,6 +5,7 @@ using UnityEngine;
 public class CameraMovement : MonoBehaviour
 {
     private Vector2 m_position;
+    [SerializeField]
     private float camSpeed = 10f;
     private float scrollSpeed = 10f;
 
@@ -12,6 +13,11 @@ public class CameraMovement : MonoBehaviour
 
     public Transform Target;
 
+    private void Start()
+    {
+        transform.position = new Vector3(Target.position.x, transform.position.y, Target.position.z - 30);
+        Camera.main.fieldOfView = 40f;
+    }
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Y))
@@ -42,7 +48,7 @@ public class CameraMovement : MonoBehaviour
             //플레이어 위치로 이동
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                transform.position = new Vector3(Target.position.x, transform.position.y, Target.position.z - 10);
+                transform.position = new Vector3(Target.position.x, transform.position.y, Target.position.z - 30);
             }
         }
         else
@@ -54,7 +60,7 @@ public class CameraMovement : MonoBehaviour
             }
             else
             {
-                transform.position = new Vector3(Target.position.x, transform.position.y, Target.position.z - 10);
+                transform.position = new Vector3(Target.position.x, transform.position.y, Target.position.z - 30);
             }
         }
         ZoomInAndOut();
@@ -67,9 +73,8 @@ public class CameraMovement : MonoBehaviour
 
     private void ZoomInAndOut()
     {
-        Camera.main.fieldOfView = Mathf.Clamp(Camera.main.fieldOfView, 40, 100);
+        Camera.main.fieldOfView = Mathf.Clamp(Camera.main.fieldOfView, 20, 60);
         float scroollWheel = Input.GetAxis("Mouse ScrollWheel");
-        Debug.Log(scroollWheel);
-        Camera.main.fieldOfView += scroollWheel * scrollSpeed;
+        Camera.main.fieldOfView -= scroollWheel * scrollSpeed;
     }
 }
